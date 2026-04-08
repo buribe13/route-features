@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import Image from 'next/image'
 import { useAuth } from '@/components/RoleProvider'
 
 export function LoginGate({ children }: { children: React.ReactNode }) {
@@ -22,10 +23,10 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-surface-0">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <div className="inline-flex w-8 h-8 rounded-[6px] bg-white mb-4" aria-hidden="true" />
+        <div className="mb-8 text-left">
+          <Image src="/la28-logo.png" alt="LA28 logo" width={32} height={32} className="rounded-[6px] mb-4" />
           <h1 className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-primary">LA28 Route Portal</h1>
-          <p className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-muted mt-2">
+          <p className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-muted mt-0">
             Sign in with your demo account.
           </p>
         </div>
