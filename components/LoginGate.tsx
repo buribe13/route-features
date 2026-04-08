@@ -24,8 +24,10 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <div className="inline-flex w-8 h-8 rounded-[6px] bg-white mb-4" aria-hidden="true" />
-          <h1 className="text-[20px] leading-[28px] font-semibold text-text-primary">LA28 Route Portal</h1>
-          <p className="text-body text-text-muted mt-2">Sign in with your demo account.</p>
+          <h1 className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-primary">LA28 Route Portal</h1>
+          <p className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-muted mt-2">
+            Sign in with your demo account.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -65,7 +67,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           </button>
         </form>
 
-        <div className="mt-6 border border-subtle-20 rounded-[6px] p-4">
+        <div className="mt-6 border border-subtle-20 rounded-[12px] p-4">
           <p className="text-caption text-text-muted mb-3">Demo accounts</p>
           <div className="space-y-2">
             {[

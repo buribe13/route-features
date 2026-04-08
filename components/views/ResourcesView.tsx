@@ -1,13 +1,12 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { ResourceToolIcon } from '@/components/icons/ResourceToolIcons'
 import {
   FilterPill,
   PageHeader,
-  SettingsBadge,
   SettingsSection,
   SettingsRow,
-  SettingsButton,
 } from '@/components/portal/PortalPrimitives'
 import { useActiveRole } from '@/components/RoleProvider'
 import {
@@ -18,6 +17,10 @@ import {
 import { ResourceAccess, ResourceCategory, ResourceSection } from '@/types'
 
 type CategoryFilter = 'All' | ResourceCategory
+
+/** Tool icon + Open only: shared fixed height so the row aligns (does not change global BADGE_PILL_BASE). */
+const RESOURCE_ROW_PILL_BASE =
+  'inline-flex items-center justify-center box-border h-7 min-w-7 px-2 text-caption font-medium leading-[18px] rounded-[6px] whitespace-nowrap border'
 
 export function ResourcesView() {
   const { activeRole } = useActiveRole()
@@ -57,13 +60,23 @@ export function ResourcesView() {
                   description={item.description}
                 >
                   <div className="flex items-center gap-2">
-                    <SettingsBadge>{item.tool}</SettingsBadge>
+                    <span
+                      className={`${RESOURCE_ROW_PILL_BASE} border-transparent bg-surface-3 text-text-secondary`}
+                      aria-label={item.tool}
+                    >
+                      <ResourceToolIcon tool={item.tool} />
+                    </span>
                     {disabled ? (
                       <span className="text-caption text-text-muted">
                         {accessState === 'restricted' ? 'Restricted' : 'No access'}
                       </span>
                     ) : (
-                      <SettingsButton>Open</SettingsButton>
+                      <button
+                        type="button"
+                        className={`${RESOURCE_ROW_PILL_BASE} border-border bg-transparent text-text-secondary hover:text-text-primary hover:border-surface-4 transition-colors duration-100 cursor-pointer`}
+                      >
+                        Open
+                      </button>
                     )}
                   </div>
                 </SettingsRow>

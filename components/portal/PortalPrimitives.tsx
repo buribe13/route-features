@@ -1,23 +1,24 @@
 import Link from 'next/link'
+import { BADGE_PILL_BASE } from '@/components/Badges'
 import { ROLE_META } from '@/lib/portal-data'
 import { DependencyStatus, Role } from '@/types'
 
 const dependencyStatusConfig: Record<DependencyStatus, { label: string; className: string }> = {
   done: {
     label: 'Done',
-    className: 'bg-surface-3 text-text-secondary border border-border',
+    className: 'bg-[#0f2a1a] text-accent-green',
   },
   in_progress: {
     label: 'In Progress',
-    className: 'bg-surface-3 text-text-secondary border border-border',
+    className: 'bg-[#2a2500] text-accent-yellow',
   },
   waiting: {
     label: 'Waiting',
-    className: 'bg-surface-3 text-text-secondary border border-border',
+    className: 'bg-[#2a0f0f] text-accent-red',
   },
   blocked: {
     label: 'Blocked',
-    className: 'bg-surface-3 text-text-secondary border border-border',
+    className: 'bg-[#2a1f0a] text-accent-amber',
   },
 }
 
@@ -54,7 +55,7 @@ export function FilterPill({
 
 export function PortalStatusBadge({ status }: { status: DependencyStatus }) {
   const config = dependencyStatusConfig[status]
-  return <span className={`text-caption px-2 py-0.5 rounded-[6px] font-medium ${config.className}`}>{config.label}</span>
+  return <span className={`${BADGE_PILL_BASE} ${config.className}`}>{config.label}</span>
 }
 
 export function ProgressBar({ value }: { value: number }) {
@@ -86,7 +87,7 @@ export function ActionLinkCard({
   return (
     <Link
       href={href}
-      className="block border border-subtle-20 rounded-[6px] p-4 hover:bg-surface-1 transition-all duration-150"
+      className="block border border-subtle-20 rounded-[12px] p-4 hover:bg-surface-1 transition-all duration-150"
     >
       {children}
     </Link>
@@ -103,7 +104,7 @@ export function SettingsSection({
   return (
     <section className="space-y-0">
       <h3 className="text-caption text-text-muted mb-3">{title}</h3>
-      <div className="border border-subtle-20 rounded-[6px] divide-y divide-subtle-20">
+      <div className="border border-subtle-20 rounded-[12px] divide-inset overflow-hidden">
         {children}
       </div>
     </section>
@@ -116,7 +117,7 @@ export function SettingsRow({
   children,
 }: {
   label: string
-  description?: string
+  description?: React.ReactNode
   children?: React.ReactNode
 }) {
   return (
@@ -162,13 +163,13 @@ export function SettingsBadge({
   variant?: 'default' | 'active' | 'warning' | 'muted'
 }) {
   const variants = {
-    default: 'bg-surface-3 text-text-secondary border-border',
-    active: 'bg-[#0f2a1a] text-accent-green border-[#145228]',
-    warning: 'bg-[#2a1f0a] text-accent-amber border-[#4a350a]',
-    muted: 'bg-surface-2 text-text-muted border-border-subtle',
+    default: 'bg-surface-3 text-text-secondary',
+    active: 'bg-[#0f2a1a] text-accent-green',
+    warning: 'bg-[#2a1f0a] text-accent-amber',
+    muted: 'bg-surface-2 text-text-muted',
   }
   return (
-    <span className={`text-caption px-2 py-0.5 rounded-[6px] border font-medium ${variants[variant]}`}>
+    <span className={`${BADGE_PILL_BASE} ${variants[variant]}`}>
       {children}
     </span>
   )
@@ -183,15 +184,17 @@ export function PageHeader({
 }) {
   return (
     <div className="mb-8">
-      <h1 className="text-[20px] leading-[28px] font-semibold text-text-primary mb-1">{title}</h1>
-      {description && <p className="text-body text-text-muted">{description}</p>}
+      <h1 className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-primary">{title}</h1>
+      {description && (
+        <p className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-muted">{description}</p>
+      )}
     </div>
   )
 }
 
 export function EmptyState({ message }: { message: string }) {
   return (
-    <div className="border border-subtle-20 rounded-[6px] p-10 text-center">
+    <div className="border border-subtle-20 rounded-[12px] p-10 text-center">
       <p className="text-body text-text-muted">{message}</p>
     </div>
   )
@@ -205,13 +208,13 @@ export function Table({
   children: React.ReactNode
 }) {
   return (
-    <div className="border border-subtle-20 rounded-[6px] overflow-hidden">
-      <div className="grid px-5 py-3 border-b border-subtle-20" style={{ gridTemplateColumns: `repeat(${headers.length}, 1fr)` }}>
+    <div className="border border-subtle-20 rounded-[12px] overflow-hidden divide-inset">
+      <div className="grid px-5 py-3" style={{ gridTemplateColumns: `repeat(${headers.length}, 1fr)` }}>
         {headers.map((h) => (
           <span key={h} className="text-caption text-text-muted font-medium">{h}</span>
         ))}
       </div>
-      <div className="divide-y divide-subtle-20">{children}</div>
+      <div className="divide-inset">{children}</div>
     </div>
   )
 }

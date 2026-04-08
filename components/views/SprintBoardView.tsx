@@ -9,6 +9,7 @@ import {
 } from '@/components/portal/PortalPrimitives'
 import { UrgencyBadge } from '@/components/Badges'
 import { useActiveRole } from '@/components/RoleProvider'
+import { ArrowRightIcon } from '@/components/icons/ArrowIcons'
 import { ROLE_META, SPRINT_DEPENDENCIES } from '@/lib/portal-data'
 import { SprintDependency } from '@/types'
 
@@ -64,8 +65,8 @@ function DependencyRow({ item }: { item: SprintDependency }) {
         <PortalStatusBadge status={item.status} />
       </div>
       <div className="mt-3 flex items-center gap-3 flex-wrap">
-        <span className="text-caption text-text-secondary">
-          {ROLE_META[item.from].org} → {ROLE_META[item.to].org}
+        <span className="text-caption text-text-secondary inline-flex items-center gap-1">
+          {ROLE_META[item.from].org} <ArrowRightIcon /> {ROLE_META[item.to].org}
         </span>
         <span className="text-caption text-text-muted">·</span>
         <UrgencyBadge urgency={item.urgency} />

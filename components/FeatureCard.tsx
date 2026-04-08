@@ -15,7 +15,7 @@ export function FeatureCard({ feature }: FeatureCardProps) {
 
   return (
     <Link href={`/feature/${feature.id}`} className="block group">
-      <article className="border border-subtle-20 rounded-[6px] p-5 hover:bg-surface-1 transition-all duration-150">
+      <article className="border border-subtle-20 rounded-[12px] p-5 hover:bg-surface-1 transition-all duration-150">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">

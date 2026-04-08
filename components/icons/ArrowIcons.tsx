@@ -3,7 +3,7 @@
 export function ArrowLeftIcon({ className }: { className?: string }) {
   return (
     <svg
-      className={className ?? 'w-3.5 h-3.5 shrink-0'}
+      className={className ?? 'w-3 h-3 shrink-0'}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export function ArrowLeftIcon({ className }: { className?: string }) {
 export function ArrowRightIcon({ className }: { className?: string }) {
   return (
     <svg
-      className={className ?? 'w-3.5 h-3.5 shrink-0'}
+      className={className ?? 'w-3 h-3 shrink-0'}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ export function ArrowRightIcon({ className }: { className?: string }) {
 export function ArrowUpRightIcon({ className }: { className?: string }) {
   return (
     <svg
-      className={className ?? 'w-3.5 h-3.5 shrink-0'}
+      className={className ?? 'w-3 h-3 shrink-0'}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

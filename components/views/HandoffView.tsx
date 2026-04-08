@@ -10,6 +10,7 @@ import {
   SettingsRow,
   SettingsButton,
 } from '@/components/portal/PortalPrimitives'
+import { ArrowRightIcon } from '@/components/icons/ArrowIcons'
 
 const STORAGE_KEY = 'la28-handoff-checklist'
 
@@ -54,7 +55,7 @@ export function HandoffView() {
       <SettingsSection title="Sprint 3 Progress">
         <div className="px-5 py-4">
           <div className="flex items-center justify-between mb-1">
-            <p className="text-body text-text-primary">Design Agency → LA Metro Engineering</p>
+            <p className="text-body text-text-primary inline-flex items-center gap-1">Design Agency <ArrowRightIcon /> LA Metro Engineering</p>
             <span className="text-body font-mono text-text-primary">{completed}/{total}</span>
           </div>
           <div className="mt-3">

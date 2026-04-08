@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/components/RoleProvider'
@@ -57,13 +58,14 @@ export function Sidebar() {
   const meta = ROLE_META[activeRole]
 
   return (
-    <aside className="w-[220px] shrink-0 bg-surface-1 rounded-[6px] flex flex-col sticky top-10 self-start max-h-[calc(100vh-80px)]">
-      <div className="px-4 pt-5 pb-4 border-b border-subtle-20">
+    <aside className="w-[220px] shrink-0 bg-surface-1 rounded-[12px] flex flex-col sticky top-10 self-start max-h-[calc(100vh-80px)]">
+      <div className="px-4 pt-5 pb-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="inline-flex w-5 h-5 rounded-[4px] bg-white shrink-0" aria-hidden="true" />
-          <span className="text-body font-medium text-text-primary">LA28 Route</span>
+          <Image src="/la28-logo.png" alt="LA28 logo" width={20} height={20} className="shrink-0 rounded-[4px]" />
+          <span className="text-body font-medium text-text-primary">LA28 Route Portal</span>
         </Link>
       </div>
+      <div className="mx-4 border-t border-subtle-20" />
 
       <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
         {PORTAL_TABS.map((tab) => {
@@ -88,7 +90,8 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="px-2 pt-3 pb-3 space-y-0.5 border-t border-subtle-20">
+      <div className="mx-4 border-t border-subtle-20" />
+      <div className="px-2 pt-3 pb-3 space-y-0.5">
         <Link
           href="/submit"
           className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-[6px] text-body transition-colors duration-100 ${

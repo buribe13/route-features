@@ -6,8 +6,8 @@ import { RoleProvider } from '@/components/RoleProvider'
 import { LoginGate } from '@/components/LoginGate'
 
 export const metadata: Metadata = {
-  title: 'LA28 Route — Feature Portal',
-  description: 'Submit and track feature requests for the LA28 Route app.',
+  title: 'LA28 Route Portal',
+  description: 'Submit and track feature requests for the LA28 Route Portal.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,10 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-surface-0 text-text-primary">
         <RoleProvider>
           <LoginGate>
-            <div className="flex min-h-screen pl-[100px] py-10 gap-10">
+            <div className="flex min-h-screen max-w-[1200px] mx-auto py-20 gap-10 px-8">
               <Sidebar />
               <div className="flex-1 min-w-0 overflow-y-auto">
-                <main className="max-w-[720px] px-6">
+                <main className="max-w-[840px] px-6">
                   {children}
                 </main>
               </div>

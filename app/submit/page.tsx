@@ -18,7 +18,7 @@ export default async function SubmitPage() {
     <div>
       <PageHeader
         title="Submit a request"
-        description="What would make LA28 Route better? Every request is read by the team."
+        description="What would make LA28 Route Portal better? Every request is read by the team."
       />
       <SubmitForm recentFeatures={recentFeatures} />
     </div>

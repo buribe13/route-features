@@ -1,6 +1,6 @@
-# LA28 Route — Feature Portal
+# LA28 Route Portal
 
-An internal + public-facing feature request and feedback portal for the LA28 Route app. Editorial feed design, dark theme, powered by Notion as the backend database.
+An internal + public-facing feature request and feedback portal for the LA28 Route product. Editorial feed design, dark theme, powered by Notion as the backend database.
 
 ## Stack
 

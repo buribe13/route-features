@@ -5,6 +5,7 @@ import { getFeatureById } from '@/lib/notion'
 import { StatusBadge, UrgencyBadge, FeatureTypeBadge } from '@/components/Badges'
 import { ROLE_META } from '@/lib/portal-data'
 import { PageHeader, SettingsSection, SettingsRow, SettingsButton } from '@/components/portal/PortalPrimitives'
+import { ArrowLeftIcon } from '@/components/icons/ArrowIcons'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,7 +26,7 @@ export default async function FeaturePage({ params }: Props) {
         href="/feature-requests"
         className="text-caption text-text-muted hover:text-text-secondary transition-colors mb-6 inline-flex items-center gap-1.5"
       >
-        <span>←</span> All requests
+        <ArrowLeftIcon /> All requests
       </Link>
 
       <div className="mt-4 mb-8">
@@ -34,7 +35,7 @@ export default async function FeaturePage({ params }: Props) {
           <UrgencyBadge urgency={feature.urgency} />
           <StatusBadge status={feature.status} />
         </div>
-        <h1 className="text-[20px] leading-[28px] font-semibold text-text-primary mb-2">{feature.name}</h1>
+        <h1 className="text-[20px] leading-[24px] font-medium tracking-[-0.01em] text-text-primary mb-2">{feature.name}</h1>
         <div className="flex items-center gap-3 flex-wrap">
           {feature.submitter && (
             <span className="text-caption text-text-muted">by {feature.submitter}</span>
@@ -109,7 +110,7 @@ export default async function FeaturePage({ params }: Props) {
           href="/feature-requests"
           className="text-caption text-text-muted hover:text-text-secondary transition-colors"
         >
-          ← Back to feed
+          <span className="inline-flex items-center gap-1.5"><ArrowLeftIcon /> Back to feed</span>
         </Link>
         <Link
           href="/submit"

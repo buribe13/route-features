@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { FeatureRequest } from '@/types'
+import { FeatureTypeBadge, StatusBadge, UrgencyBadge } from '@/components/Badges'
 const FEATURE_TYPES = ['UX', 'Workflow', 'Monetization', 'Teams', 'Performance', 'Other']
 const URGENCIES = [
   { value: 'High', label: 'High — needed for launch' },
@@ -248,15 +249,15 @@ export function SubmitForm({ recentFeatures = [] }: SubmitFormProps) {
               <a
                 key={f.id}
                 href={`/feature/${f.id}`}
-                className="block border border-subtle-20 rounded-[6px] p-3 hover:bg-surface-1 transition-all duration-100 group"
+                className="block border border-subtle-20 rounded-[12px] p-5 hover:bg-surface-1 transition-all duration-100 group"
               >
                 <p className="text-caption text-text-secondary group-hover:text-text-primary transition-colors truncate">
                   {f.name}
                 </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-caption text-text-muted">{f.featureType}</span>
-                  <span className="text-caption text-surface-4">·</span>
-                  <span className="text-caption text-text-muted">{f.urgency}</span>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  <FeatureTypeBadge type={f.featureType} />
+                  <UrgencyBadge urgency={f.urgency} />
+                  <StatusBadge status={f.status} />
                 </div>
               </a>
             ))}

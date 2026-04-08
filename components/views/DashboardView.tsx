@@ -5,12 +5,13 @@ import { useActiveRole } from '@/components/RoleProvider'
 import {
   ActionLinkCard,
   PageHeader,
+  PortalStatusBadge,
   ProgressBar,
-  SettingsBadge,
   SettingsSection,
   SettingsRow,
 } from '@/components/portal/PortalPrimitives'
 import { UrgencyBadge } from '@/components/Badges'
+import { ArrowRightIcon } from '@/components/icons/ArrowIcons'
 import { DASHBOARD_ACTIONS, ROLE_META, SPRINT_CONTEXT, SPRINT_DEPENDENCIES } from '@/lib/portal-data'
 
 export function DashboardView() {
@@ -73,9 +74,9 @@ export function DashboardView() {
           <SettingsRow
             key={item.id}
             label={item.feature}
-            description={`${ROLE_META[item.from].org} → ${ROLE_META[item.to].org}`}
+            description={<span className="inline-flex items-center gap-1">{ROLE_META[item.from].org} <ArrowRightIcon /> {ROLE_META[item.to].org}</span>}
           >
-            <SettingsBadge>{item.status.replace('_', ' ')}</SettingsBadge>
+            <PortalStatusBadge status={item.status} />
           </SettingsRow>
         ))}
       </SettingsSection>
