@@ -1,4 +1,4 @@
-import { Status, Urgency } from '@/types'
+import { BriefStatus, Status, Urgency } from '@/types'
 
 /** Shared pill styles: balanced padding, fixed line height so height matches across badges */
 export const BADGE_PILL_BASE =
@@ -23,6 +23,21 @@ const statusConfig: Record<Status, { label: string; className: string }> = {
   },
 }
 
+const briefStatusConfig: Record<BriefStatus, { label: string; className: string }> = {
+  draft: {
+    label: 'Draft',
+    className: 'bg-surface-3 text-text-secondary',
+  },
+  active: {
+    label: 'Active',
+    className: 'bg-[#2a2500] text-accent-yellow',
+  },
+  archived: {
+    label: 'Archived',
+    className: 'bg-surface-2 text-text-muted',
+  },
+}
+
 const urgencyConfig: Record<Urgency, { label: string; className: string }> = {
   High: {
     label: 'High',
@@ -40,6 +55,15 @@ const urgencyConfig: Record<Urgency, { label: string; className: string }> = {
 
 export function StatusBadge({ status }: { status: Status }) {
   const config = statusConfig[status] ?? statusConfig['Backlog']
+  return (
+    <span className={`${BADGE_PILL_BASE} ${config.className}`}>
+      {config.label}
+    </span>
+  )
+}
+
+export function BriefStatusBadge({ status }: { status: BriefStatus }) {
+  const config = briefStatusConfig[status] ?? briefStatusConfig.draft
   return (
     <span className={`${BADGE_PILL_BASE} ${config.className}`}>
       {config.label}

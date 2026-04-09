@@ -92,3 +92,79 @@ export interface ResourceItem {
   access: ResourceAccess
   org?: Role
 }
+
+// ---------------------------------------------------------------------------
+// Agent handoff types
+// ---------------------------------------------------------------------------
+
+export type BriefOrigin = 'feature' | 'subproject' | 'collaboration'
+export type BriefStatus = 'draft' | 'active' | 'archived'
+export type HandoffPacketStatus = 'preparing' | 'ready' | 'submitted' | 'acknowledged'
+
+export interface SubprojectBrief {
+  slug: string
+  title: string
+  ownerRole: Role
+  status: BriefStatus
+  origin: BriefOrigin
+  featureIds: string[]
+  updatedAt: string
+  summary: string
+  body: string
+  risks?: string[]
+  openQuestions?: string[]
+  receivingTeam?: Role
+  nextAgentInstructions?: string
+}
+
+export interface HandoffLink {
+  label: string
+  href: string
+}
+
+export interface HandoffPacket {
+  id: string
+  briefSlug: string
+  from: Role
+  to: Role
+  status: HandoffPacketStatus
+  checklist: HandoffChecklistItem[]
+  linkedFeatureIds: string[]
+  links: HandoffLink[]
+  handoffSummary?: string
+  suggestedTicketPayload?: Partial<AtCommandDraft>
+  createdAt: string
+  updatedAt: string
+}
+
+export type AssistantIntentType = 'question' | 'owner_lookup' | 'next_step' | 'ticket_draft' | 'ticket_create' | 'brief_draft'
+
+export interface AssistantIntent {
+  type: AssistantIntentType
+  raw: string
+  briefSlug?: string
+  featureId?: string
+  targetRole?: Role
+}
+
+export type AssistantActionKind = 'answer' | 'suggestion' | 'ticket_draft' | 'ticket_created' | 'brief_draft' | 'brief_saved' | 'error'
+
+export interface AssistantAction {
+  id: string
+  kind: AssistantActionKind
+  content: string
+  timestamp: string
+  draft?: AtCommandDraft
+  createdFeatureId?: string
+}
+
+export interface AtCommandDraft {
+  name: string
+  featureType: FeatureType
+  problem: string
+  desiredOutcome: string
+  urgency: Urgency
+  submitter: string
+  org?: Role
+  links?: string
+}

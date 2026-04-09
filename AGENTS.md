@@ -9,11 +9,11 @@
 ## Learned Workspace Facts
 
 - This project uses `@notionhq/client` v3; v5 has a different API (e.g. `databases.query` moved to `dataSources`).
-- Typography: Inter. Page titles and page descriptions (`PageHeader`) use 20px/24 medium; descriptions use `text-text-muted`. Body and caption use 14px/22 and 12px/18; large display headings use 24px/32 where used.
+- Typography: Inter. Page titles and page descriptions (`PageHeader`) use 20px/24 medium with `tracking-[-0.01em]`; descriptions use `text-text-muted`. Body and caption use 14px/22 and 12px/18; large display headings use 24px/32 where used.
 - `.env.local` must have content and each variable on its own line for Next.js to load env vars.
 - For `NOTION_DATABASE_ID`, use the 32-character ID from the Notion page URL path, not the `v=` view parameter.
 - Border radius: 12px for non-button containers with a border (cards, sections, sidebar); 6px for buttons, badges, form inputs, and nav items.
-- Layout uses a 220px left sidebar (not a top header); sidebar branding is "LA28 Route Portal" with a white placeholder square; `la28-logo.png` is no longer rendered.
+- Layout uses a 220px left sidebar (not a top header); sidebar branding is "LA28 Route Portal" with the LA28 mark from `public/la28-logo.png` via Next.js `Image` (20×20 in the sidebar, 32×32 on the login screen).
 - Non-button container borders use `border-subtle-20` class (rgba(255,255,255,0.07)) for subtle 20% opacity.
 - Content area is constrained to `max-w-[840px]` centered via `max-w-[1200px] mx-auto px-8 py-20` on the root flex layout (login renders outside `LoginGate` and is unaffected).
 - Tag/badge pills (status, urgency, type, etc.) have no border — shared `BADGE_PILL_BASE` (inline-flex, `px-2 py-1`, caption line height, `whitespace-nowrap`), background fill only.

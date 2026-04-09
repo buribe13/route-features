@@ -6,6 +6,7 @@ import { StatusBadge, UrgencyBadge, FeatureTypeBadge } from '@/components/Badges
 import { ROLE_META } from '@/lib/portal-data'
 import { PageHeader, SettingsSection, SettingsRow, SettingsButton } from '@/components/portal/PortalPrimitives'
 import { ArrowLeftIcon } from '@/components/icons/ArrowIcons'
+import { CreateBriefButton } from '@/components/agent-handoff/CreateBriefButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -101,6 +102,17 @@ export default async function FeaturePage({ params }: Props) {
                 No update note yet. The team will fill this in as the request moves forward.
               </p>
             )}
+          </div>
+        </SettingsSection>
+      </div>
+
+      <div className="mt-6">
+        <SettingsSection title="Collaboration">
+          <div className="px-5 py-4 flex items-center justify-between">
+            <p className="text-body text-text-secondary">
+              Create or view a markdown brief for cross-team collaboration on this feature.
+            </p>
+            <CreateBriefButton featureId={params.id} featureName={feature.name} />
           </div>
         </SettingsSection>
       </div>

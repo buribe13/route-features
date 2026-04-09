@@ -4,13 +4,13 @@ import { createFeature } from '@/lib/notion'
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { name, featureType, problem, desiredOutcome, urgency, links, submitter } = body
+    const { name, featureType, problem, desiredOutcome, urgency, links, submitter, org } = body
 
     if (!name || !featureType || !problem || !desiredOutcome || !urgency || !submitter) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const id = await createFeature({ name, featureType, problem, desiredOutcome, urgency, links, submitter })
+    const id = await createFeature({ name, featureType, problem, desiredOutcome, urgency, links, submitter, org })
     return NextResponse.json({ id }, { status: 201 })
   } catch (error) {
     console.error('Failed to create feature:', error)

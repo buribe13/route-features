@@ -2,6 +2,7 @@ import { getFeatures } from '@/lib/notion'
 import { SubmitForm } from '@/components/SubmitForm'
 import { FeatureRequest } from '@/types'
 import { PageHeader } from '@/components/portal/PortalPrimitives'
+import { HandoffTip } from '@/components/agent-handoff/HandoffTip'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +22,7 @@ export default async function SubmitPage() {
         description="What would make LA28 Route Portal better? Every request is read by the team."
       />
       <SubmitForm recentFeatures={recentFeatures} />
+      <HandoffTip />
     </div>
   )
 }
