@@ -24,12 +24,6 @@ function parseBrief(slug: string, raw: string): SubprojectBrief {
   }
 }
 
-function ensureBriefsDir() {
-  if (!fs.existsSync(BRIEFS_DIR)) {
-    fs.mkdirSync(BRIEFS_DIR, { recursive: true })
-  }
-}
-
 export function getAllBriefs(): SubprojectBrief[] {
   if (!fs.existsSync(BRIEFS_DIR)) return []
   const files = fs.readdirSync(BRIEFS_DIR).filter((f) => f.endsWith('.md'))
@@ -45,25 +39,4 @@ export function getBriefBySlug(slug: string): SubprojectBrief | null {
   if (!fs.existsSync(filePath)) return null
   const raw = fs.readFileSync(filePath, 'utf-8')
   return parseBrief(slug, raw)
-}
-
-export function saveBrief(brief: SubprojectBrief): void {
-  ensureBriefsDir()
-  const frontmatter: Record<string, unknown> = {
-    slug: brief.slug,
-    title: brief.title,
-    ownerRole: brief.ownerRole,
-    status: brief.status,
-    origin: brief.origin,
-    featureIds: brief.featureIds,
-    updatedAt: brief.updatedAt,
-    summary: brief.summary,
-  }
-  if (brief.receivingTeam) frontmatter.receivingTeam = brief.receivingTeam
-  if (brief.risks && brief.risks.length > 0) frontmatter.risks = brief.risks
-  if (brief.openQuestions && brief.openQuestions.length > 0) frontmatter.openQuestions = brief.openQuestions
-  if (brief.nextAgentInstructions) frontmatter.nextAgentInstructions = brief.nextAgentInstructions
-
-  const content = matter.stringify(brief.body, frontmatter)
-  fs.writeFileSync(path.join(BRIEFS_DIR, `${brief.slug}.md`), content, 'utf-8')
 }

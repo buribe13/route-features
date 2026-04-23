@@ -62,13 +62,34 @@ function ActionBubble({
     brief_saved: 'bg-[#0f2a1a] text-accent-green',
     error: 'bg-[#2a0f0f] text-accent-red',
   }
+  const kindLabel = ACTION_KIND_LABELS[kind]?.label ?? 'Agent'
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-[12px] px-4 py-3 text-body max-w-full whitespace-pre-wrap text-left transition-opacity hover:opacity-80 ${kindColors[kind] ?? 'bg-surface-2 text-text-primary'}`}
+      title="Click for details"
+      className={`group w-full rounded-[12px] px-4 py-3 text-body whitespace-pre-wrap text-left transition-opacity hover:opacity-80 flex items-start gap-3 ${kindColors[kind] ?? 'bg-surface-2 text-text-primary'}`}
     >
-      {content}
+      <span className="text-caption font-medium shrink-0 mt-[2px] opacity-80">
+        {kindLabel}
+      </span>
+      <span className="flex-1 min-w-0">{content}</span>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="shrink-0 mt-[3px] opacity-50 group-hover:opacity-100 transition-opacity"
+      >
+        <path
+          d="M6 4l4 4-4 4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
     </button>
   )
 }
@@ -90,6 +111,7 @@ export function HandoffView() {
   const [items, setItems] = useState(HANDOFF_CHECKLIST)
   const [input, setInput] = useState('')
   const [lightbox, setLightbox] = useState<LightboxState>(null)
+  const [isSavingBrief, setIsSavingBrief] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -156,14 +178,19 @@ export function HandoffView() {
                 or ask about any subproject.
               </p>
             ) : (
-              actions.map((a) => (
-                <ActionBubble
-                  key={a.id}
-                  kind={a.kind}
-                  content={a.content}
-                  onClick={() => setLightbox({ type: 'action', action: a })}
-                />
-              ))
+              <>
+                <p className="text-caption text-text-muted">
+                  Activity log. Click any item for details.
+                </p>
+                {actions.map((a) => (
+                  <ActionBubble
+                    key={a.id}
+                    kind={a.kind}
+                    content={a.content}
+                    onClick={() => setLightbox({ type: 'action', action: a })}
+                  />
+                ))}
+              </>
             )}
           </div>
 
@@ -216,15 +243,25 @@ export function HandoffView() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={savePendingBrief}
-                  className="text-caption px-3 py-1 rounded-[6px] bg-text-primary text-surface-0 font-medium hover:bg-white transition-colors"
+                  onClick={async () => {
+                    if (isSavingBrief) return
+                    setIsSavingBrief(true)
+                    try {
+                      await savePendingBrief()
+                    } finally {
+                      setIsSavingBrief(false)
+                    }
+                  }}
+                  disabled={isSavingBrief}
+                  className="text-caption px-3 py-1 rounded-[6px] bg-text-primary text-surface-0 font-medium hover:bg-white transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Save brief
+                  {isSavingBrief ? 'Saving...' : 'Save brief'}
                 </button>
                 <button
                   type="button"
                   onClick={dismissBriefDraft}
-                  className="text-caption px-3 py-1 rounded-[6px] border border-border text-text-secondary hover:text-text-primary transition-colors"
+                  disabled={isSavingBrief}
+                  className="text-caption px-3 py-1 rounded-[6px] border border-border text-text-secondary hover:text-text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   Dismiss
                 </button>

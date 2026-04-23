@@ -5,6 +5,8 @@
 - Notion internal integration secrets may start with `ntn_` (newer format) or `secret_`; use the value exactly as Notion provides.
 - No uppercase/all-caps text styling; all section labels and headings use standard sentence casing.
 - Unicode arrow characters (→, ←, ↗, ↔) should not appear in UI; use SVG components from `components/icons/ArrowIcons.tsx`.
+- Status/urgency badge color scheme: done/complete = green, in-progress = yellow, waiting/high/blocked = red; in-progress and backlog pills should match the shared status-badge styling.
+- Action buttons that sit alongside badges (e.g. "Open" resource buttons) should share the badge pill styling (same height, `BADGE_PILL_BASE`) while keeping their original text and background colors.
 
 ## Learned Workspace Facts
 
@@ -19,4 +21,6 @@
 - Tag/badge pills (status, urgency, type, etc.) have no border — shared `BADGE_PILL_BASE` (inline-flex, `px-2 py-1`, caption line height, `whitespace-nowrap`), background fill only.
 - Divider lines inside bordered containers use the `divide-inset` CSS utility (inset 20px to match content padding); sidebar dividers use explicit `mx-4` inset elements.
 - Role state is managed via `RoleProvider` (React context + sessionStorage); three demo roles: design, pm, engineer.
+- Documentation items (briefs, checklist items, action items, etc.) open as a lightbox overlay rather than navigating to a separate route.
+- The AI agent is embedded into markdown creation/handoff workflows (subprojects and features convert to markdown; uploads are tracked universally); it is not a floating chat dock.
 

@@ -38,6 +38,8 @@ type HandoffContextValue = {
 
 const HandoffContext = createContext<HandoffContextValue | null>(null)
 
+const LOCAL_BRIEFS_KEY = 'la28-briefs-v1'
+
 function uid() {
   return Math.random().toString(36).slice(2, 10)
 }
@@ -52,6 +54,40 @@ function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
     .slice(0, 60)
+}
+
+function loadLocalBriefs(): Record<string, SubprojectBrief> {
+  if (typeof window === 'undefined') return {}
+  try {
+    const raw = window.localStorage.getItem(LOCAL_BRIEFS_KEY)
+    if (!raw) return {}
+    const parsed = JSON.parse(raw)
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed as Record<string, SubprojectBrief>
+    }
+    return {}
+  } catch {
+    return {}
+  }
+}
+
+function saveLocalBriefs(map: Record<string, SubprojectBrief>): void {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(LOCAL_BRIEFS_KEY, JSON.stringify(map))
+  } catch {
+    /* ignore quota / serialization errors */
+  }
+}
+
+function mergeBriefs(
+  seed: SubprojectBrief[],
+  local: Record<string, SubprojectBrief>,
+): SubprojectBrief[] {
+  const bySlug = new Map<string, SubprojectBrief>()
+  for (const b of seed) bySlug.set(b.slug, b)
+  for (const slug of Object.keys(local)) bySlug.set(slug, local[slug])
+  return Array.from(bySlug.values())
 }
 
 function parseIntent(raw: string, activeRole: Role): AssistantIntent {
@@ -314,9 +350,12 @@ export function HandoffProvider({ children }: { children: React.ReactNode }) {
     fetch('/api/briefs')
       .then((r) => r.json())
       .then((data) => {
-        if (Array.isArray(data)) setBriefs(data)
+        const seed = Array.isArray(data) ? (data as SubprojectBrief[]) : []
+        setBriefs(mergeBriefs(seed, loadLocalBriefs()))
       })
-      .catch(() => {})
+      .catch(() => {
+        setBriefs(mergeBriefs([], loadLocalBriefs()))
+      })
   }, [])
 
   useEffect(() => {
@@ -352,17 +391,33 @@ export function HandoffProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pendingDraft),
       })
-      const data = await res.json()
-      setActions((prev) => [
-        ...prev,
-        {
-          id: uid(),
-          kind: 'ticket_created',
-          content: `Ticket created: "${pendingDraft.name}"${data.id ? ` (ID: ${data.id})` : ''}`,
-          timestamp: now(),
-          createdFeatureId: data.id,
-        },
-      ])
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        const message =
+          (data && typeof data === 'object' && 'error' in data && typeof data.error === 'string'
+            ? data.error
+            : null) ?? `Server responded with ${res.status}`
+        setActions((prev) => [
+          ...prev,
+          {
+            id: uid(),
+            kind: 'error',
+            content: `Failed to create the ticket: ${message}`,
+            timestamp: now(),
+          },
+        ])
+      } else {
+        setActions((prev) => [
+          ...prev,
+          {
+            id: uid(),
+            kind: 'ticket_created',
+            content: `Ticket created: "${pendingDraft.name}"${data.id ? ` (ID: ${data.id})` : ''}`,
+            timestamp: now(),
+            createdFeatureId: data.id,
+          },
+        ])
+      }
     } catch {
       setActions((prev) => [
         ...prev,
@@ -388,22 +443,25 @@ export function HandoffProvider({ children }: { children: React.ReactNode }) {
   const savePendingBrief = useCallback(async () => {
     if (!pendingBriefDraft) return
     try {
-      await fetch('/api/briefs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(pendingBriefDraft),
-      })
+      const today = new Date().toISOString().slice(0, 10)
+      const finalBrief: SubprojectBrief = {
+        ...pendingBriefDraft,
+        updatedAt: today,
+      }
+      const localMap = loadLocalBriefs()
+      localMap[finalBrief.slug] = finalBrief
+      saveLocalBriefs(localMap)
+      setBriefs((prev) => mergeBriefs(prev, localMap))
       setActions((prev) => [
         ...prev,
         {
           id: uid(),
           kind: 'brief_saved',
-          content: `Brief saved: "${pendingBriefDraft.title}"`,
+          content: `Brief saved: "${finalBrief.title}"`,
           timestamp: now(),
         },
       ])
       setPendingBriefDraft(null)
-      fetchBriefs()
     } catch {
       setActions((prev) => [
         ...prev,
@@ -415,7 +473,7 @@ export function HandoffProvider({ children }: { children: React.ReactNode }) {
         },
       ])
     }
-  }, [pendingBriefDraft, fetchBriefs])
+  }, [pendingBriefDraft])
 
   const updatePendingBriefDraft = useCallback((patch: Partial<SubprojectBrief>) => {
     setPendingBriefDraft((prev) => (prev ? { ...prev, ...patch } : null))
